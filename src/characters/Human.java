@@ -25,6 +25,11 @@ public class Human extends Characters {
     public BigDecimal getDefense() {
         return defense;
     }
+    @Override
+    public Characters createCharacter(String name){
+        return new Human(name, BigDecimal.valueOf(30), BigDecimal.valueOf(100), BigDecimal.valueOf(10));
+    }
+    
     public BigDecimal healthUpdate(BigDecimal damage) {
         health = health.subtract(damage);
         // Can negatif olamaz

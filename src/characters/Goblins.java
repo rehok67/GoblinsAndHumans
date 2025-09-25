@@ -25,6 +25,10 @@ public class Goblins extends Characters {
     public BigDecimal getDefense() {
         return defense;
     }
+    @Override
+    public Characters createCharacter(String name) {
+        return new Goblins(name, BigDecimal.valueOf(20), BigDecimal.valueOf(80), BigDecimal.valueOf(20));
+    }
   
     // setter for health 
     public BigDecimal healthUpdate(BigDecimal damage) {
