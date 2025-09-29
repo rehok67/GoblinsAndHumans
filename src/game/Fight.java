@@ -9,7 +9,9 @@ public class Fight {
     
     // Simulate multiple rounds until one player dies
     public void simulateWar(Characters player1, Characters player2) {
-        CalcRound calcRound = new CalcRound(new Random(), new Random());
+        // Better approach: Single Random instance, properly seeded
+        Random gameRandom = new Random();
+        CalcRound calcRound = new CalcRound(gameRandom, gameRandom);
         int roundNumber = 1;
         
         System.out.println("=== WAR BEGINS ===");
