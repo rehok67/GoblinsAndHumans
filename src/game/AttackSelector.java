@@ -1,7 +1,6 @@
 package src.game;
 
 import java.util.Random;
-import src.attacks.Attack;
 import src.attacks.CasualAttack;
 import src.attacks.MediumAttack;
 import src.attacks.HeavyAttack;

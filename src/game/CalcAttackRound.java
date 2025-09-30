@@ -2,17 +2,15 @@ package src.game;
 
 import java.math.BigDecimal;
 import java.util.Random;
-import src.attacks.Attack;
 import src.characters.Characters;
-import src.defends.Defend;
 import src.attacks.AttackContext;
 import src.defends.DefendContext;
 
-public class CalcRound {
+public class CalcAttackRound {
     private final AttackSelector attackSelector;
     private final DefenseSelector defenseSelector;
 
-    public CalcRound(Random randomAttacker, Random randomDefender) {
+    public CalcAttackRound(Random randomAttacker, Random randomDefender) {
         this.attackSelector = new AttackSelector(randomAttacker);
         this.defenseSelector = new DefenseSelector(randomDefender);
     }

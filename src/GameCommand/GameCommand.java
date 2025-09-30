@@ -1,5 +1,7 @@
 package src.GameCommand;
 
-public interface GameCommand {
+
+public interface GameCommand{
     void execute();
+
 }

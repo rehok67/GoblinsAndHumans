@@ -3,7 +3,11 @@ package src.game;
 import java.math.BigDecimal;
 import java.util.Random;
 import src.characters.Characters;
-
+import src.GameCommand.CommandFactory;
+import src.GameCommand.GameCommand;
+import src.Turn.AutoTurnSelector;
+import src.Turn.TurnType;
+import src.Turn.UserTurnSelector;
 // Fight class uses CalcRound to simulate turn-based combat
 public class Fight {
     
@@ -11,46 +15,40 @@ public class Fight {
     public void simulateWar(Characters player1, Characters player2) {
         // Better approach: Single Random instance, properly seeded
         Random gameRandom = new Random();
-        CalcRound calcRound = new CalcRound(gameRandom, gameRandom);
+        CalcAttackRound calcRound = new CalcAttackRound(gameRandom, gameRandom);
         int roundNumber = 1;
+        UserTurnSelector userTurn = new UserTurnSelector();
+        AutoTurnSelector autoTurn = new AutoTurnSelector();
         
-        System.out.println("=== WAR BEGINS ===");
+        System.out.println("=== WAR BEGINS (AI ENEMY) ===");
         System.out.println(player1.getName() + " (HP: " + player1.getHealth() + ") vs " + 
                           player2.getName() + " (HP: " + player2.getHealth() + ")");
         System.out.println();
+        TurnType player2Choice = autoTurn.selectTurn(player2);
+        GameCommand player2Command = CommandFactory.createCommand(player2Choice, player2, player1);
         
         while (player1.getHealth().compareTo(BigDecimal.ZERO) > 0 && 
                player2.getHealth().compareTo(BigDecimal.ZERO) > 0) {
             
+            
             System.out.println("=== ROUND " + roundNumber + " ===");
-            
-            // Player 1 attacks Player 2
-            System.out.println(player1.getName() + "'s turn:");
-            BigDecimal attackResult = calcRound.executeRound(player1, player2);
-            player2.healthUpdate(attackResult);
-            System.out.println(player2.getName() + " remaining HP: " + player2.getHealth());
-            
-            // Check if player2 is dead
+            TurnType player1Choice = userTurn.selectTurn(player1);
+            GameCommand player1Command = CommandFactory.createCommand(player1Choice, player1, player2);
+            player1Command.execute(); // Bu kadar! If-else'e gerek yok!
             if (player2.getHealth().compareTo(BigDecimal.ZERO) <= 0) {
-                System.out.println("\n🏆 " + player1.getName() + " WINS! " + player2.getName() + " has been defeated!");
+                System.out.println(player2.getName() + " has been defeated!");
                 break;
             }
-            
-            System.out.println("\n" + player2.getName() + "'s turn:");
-            attackResult = calcRound.executeRound(player2, player1);
-            player1.healthUpdate(attackResult);
-            System.out.println(player1.getName() + " remaining HP: " + player1.getHealth());
-            
-            // Check if player1 is dead
+
+            // Player 2's turn
+        
+            player2Command.execute();
             if (player1.getHealth().compareTo(BigDecimal.ZERO) <= 0) {
-                System.out.println("\n🏆 " + player2.getName() + " WINS! " + player1.getName() + " has been defeated!");
+                System.out.println(player1.getName() + " has been defeated!");
                 break;
             }
-            
-            System.out.println("\n--- End of Round " + roundNumber + " ---\n");
             roundNumber++;
         }
-        
-        System.out.println("=== WAR ENDED after " + (roundNumber - 1) + " rounds ===");
+    
     }
 }
